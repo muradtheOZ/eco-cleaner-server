@@ -98,6 +98,7 @@ app.post('/addService', (req, res) => {
   const file = req.files.file;
   const title = req.body.title;
   const description = req.body.description;
+  const price = req.body.price;
   const newImg = file.data;
   const encImg = newImg.toString('base64');
 
