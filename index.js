@@ -108,7 +108,7 @@ app.post('/addService', (req, res) => {
       img: Buffer.from(encImg, 'base64')
   };
 
-  serviceCollection.insertOne({ title, description, image })
+  serviceCollection.insertOne({ title, description,price, image })
       .then(result => {
           res.send(result.insertedCount > 0);
       })
