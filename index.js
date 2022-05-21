@@ -40,6 +40,25 @@ client.connect(err => {
         })
     })
 
+    app.put('/orders/:id',async(req, res) => {
+
+      const id = ObjectId(req.params.id);
+      const order = req.body;
+      const filter = {_id:id};
+      const options = {upesert: true}
+      const updateDoc = {
+        $set: {
+          name: order.name,
+          email: order.email,
+          status: order.status
+
+      },
+    };
+      const result =  await orderCollection.updateOne(filter, updateDoc, options);
+        console.log(result)
+        res.json(result)
+    })
+
     app.post('/ordersSpecific', (req, res) => {
       const order = req.body.email;
       // console.log('from post orders', order)
