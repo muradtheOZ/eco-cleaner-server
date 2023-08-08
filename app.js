@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs-extra");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient } = require("mongodb");
 const ObjectId = require("mongodb").ObjectId;
 require("dotenv").config();
 const fileUpload = require("express-fileupload");
@@ -12,30 +12,14 @@ const port = 4000;
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bejzy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 
+    const uri =
+      "mongodb+srv://murad97dev:SIMregiM1@cluster0.e4wbkw7.mongodb.net?retryWrites=true&w=majority";
 
-const uri = "mongodb+srv://murad97dev:SIMregiM1@cluster0.e4wbkw7.mongodb.net/?retryWrites=true&w=majority";
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
-  try {
+    // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+    const client = new MongoClient(uri);
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+
+    // Send a ping to confirm a successfu
 
 
 const app = express();
@@ -44,13 +28,16 @@ app.use(express.json());
 app.use(express.static("clients"));
 app.use(fileUpload());
 
+
 client.connect((err) => {
-  const orderCollection = client.db(process.env.DB_NAME).collection("orders");
-  const reviewCollection = client.db(process.env.DB_NAME).collection("reviews");
-  const serviceCollection = client
-    .db(process.env.DB_NAME)
-    .collection("services");
-  const adminCollection = client.db(process.env.DB_NAME).collection("users");
+  const dbName = "homeclean";
+const collectionName = "services";
+
+const database = client.db(dbName);
+const serviceCollection = database.collection(collectionName);
+  const orderCollection = database.collection("orders");
+  const reviewCollection = database.collection("reviews");
+  const adminCollection = database.collection("users");
 
   app.post("/addOrder", (req, res) => {
     const order = req.body;
